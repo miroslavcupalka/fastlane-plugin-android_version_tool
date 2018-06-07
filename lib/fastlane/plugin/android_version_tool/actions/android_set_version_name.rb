@@ -10,7 +10,10 @@ module Fastlane
         new_version_name = Helper::VersioningAndroidHelper.get_new_version_name(gradle_file_path, params[:version_name])
         # bump_type ||= params[:bump_type]
 
-        saved = Helper::VersioningAndroidHelper.save_key_to_gradle_file(gradle_file_path, "versionName", new_version_name)
+        saved = Helper::VersioningAndroidHelper.save_key_to_gradle_file(gradle_file_path, "VERSION_MAJOR", new_version_name)
+        saved = Helper::VersioningAndroidHelper.save_key_to_gradle_file(gradle_file_path, "VERSION_MINOR", new_version_name)
+        saved = Helper::VersioningAndroidHelper.save_key_to_gradle_file(gradle_file_path, "VERSION_PATCH", new_version_name)
+        saved = Helper::VersioningAndroidHelper.save_key_to_gradle_file(gradle_file_path, "VERSION_BUILD", new_version_name)
 
         if saved == -1
           UI.user_error!("Unable to set the Version Name in build.gradle file at #{gradle_file_path}.")

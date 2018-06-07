@@ -1,33 +1,33 @@
 module Fastlane
   module Helper
-    class VersioningAndroidHelper
+    class AndroidVersionToolHelper
       require "shellwords"
       require "tempfile"
       require "fileutils"
 
-      GRADLE_FILE_TEST = "/tmp/fastlane/tests/versioning/app/build.gradle"
+      VERSION_PROPERTIES_FILE_TEST = "/tmp/fastlane/tests/androidversiontool/version.properties"
 
-      def self.get_gradle_file(gradle_file)
-        return Helper.test? ? GRADLE_FILE_TEST : gradle_file
+      def self.get_version_properties_file(version_properties_file)
+        return Helper.test? ? VERSION_PROPERTIES_FILE_TEST : version_properties_file
       end
 
-      def self.get_gradle_file_path(gradle_file)
-        gradle_file = self.get_gradle_file(gradle_file)
-        return File.expand_path(gradle_file).shellescape
+      def self.get_version_properties_file_path(version_properties_file)
+        version_properties_file = self.get_version_properties_file(version_properties_file)
+        return File.expand_path(version_properties_file).shellescape
       end
 
-      def self.get_new_version_code(gradle_file, new_version_code)
+      def self.get_new_version_code(version_properties_file, new_version_code)
         if new_version_code.nil?
-          current_version_code = self.read_key_from_gradle_file(gradle_file, "versionCode")
+          current_version_code = self.read_key_from_version_properties_file(version_properties_file, "versionCode")
           new_version_code = current_version_code.to_i + 1
         end
 
         return new_version_code.to_i
       end
 
-      def self.get_new_version_name(gradle_file, new_version_name, bump_type = nil)
+      def self.get_new_version_name(version_properties_file, new_version_name, bump_type = nil)
         if new_version_name.nil?
-          current_version_name = self.read_key_from_gradle_file(gradle_file, "versionName")
+          current_version_name = self.read_key_from_version_properties_file(version_properties_file, "versionName")
           current_version_parts = current_version_name.split(/[.]/)
 
           major = current_version_parts[0].to_i
@@ -46,10 +46,10 @@ module Fastlane
         return new_version_name.to_s
       end
 
-      def self.read_key_from_gradle_file(gradle_file, key)
+      def self.read_key_from_version_properties_file(version_properties_file, key)
         value = false
         begin
-          file = File.new(gradle_file, "r")
+          file = File.new(version_properties_file, "r")
           while (line = file.gets)
             next unless line.include? key
             components = line.strip.split(' ')
@@ -64,13 +64,13 @@ module Fastlane
         return value
       end
 
-      def self.save_key_to_gradle_file(gradle_file, key, value)
-        current_value = self.read_key_from_gradle_file(gradle_file, key)
+      def self.save_key_to_version_properties_file(version_properties_file, key, value)
+        current_value = self.read_key_from_version_properties_file(version_properties_file, key)
 
         begin
           found = false
           temp_file = Tempfile.new("flSave_#{key}_ToGradleFile")
-          File.open(gradle_file, "r") do |file|
+          File.open(version_properties_file, "r") do |file|
             file.each_line do |line|
               if line.include? key and found == false
                 found = true
@@ -82,7 +82,7 @@ module Fastlane
           end
           temp_file.rewind
           temp_file.close
-          FileUtils.mv(temp_file.path, gradle_file)
+          FileUtils.mv(temp_file.path, version_properties_file)
           temp_file.unlink
         end
 

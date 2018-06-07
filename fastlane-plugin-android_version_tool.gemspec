@@ -2,16 +2,16 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'fastlane/plugin/versioning_android/version'
+require 'fastlane/plugin/android_version_tool/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'fastlane-plugin-versioning_android'
-  spec.version       = Fastlane::VersioningAndroid::VERSION
-  spec.author        = 'Igor Lamos'
-  spec.email         = 'igor@be.plus'
+  spec.name          = 'fastlane-plugin-android_version_tool'
+  spec.version       = Fastlane::AndroidVersionTool::VERSION
+  spec.author        = 'Miroslav Čupalka'
+  spec.email         = 'miroslav.cupalka@gmail.com'
 
-  spec.summary       = 'Android Versioning Plugin for Fastlane'
-  spec.homepage      = "https://github.com/beplus/fastlane-plugin-versioning_android"
+  spec.summary       = 'Android Version Tool Plugin for Fastlane'
+  spec.homepage      = "https://github.com/beplus/fastlane-plugin-android_version_tool"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)

@@ -10,17 +10,17 @@ module SpecHelper
 end
 
 require 'fastlane' # to import the Action super class
-require 'fastlane/plugin/versioning_android' # import the actual plugin
+require 'fastlane/plugin/android_version_tool' # import the actual plugin
 
 Fastlane.load_actions # load other actions (in case your plugin calls other actions or shared values)
 
 def copy_project_files_fixture
-  FileUtils.mkdir_p("/tmp/fastlane/tests/versioning")
+  FileUtils.mkdir_p("/tmp/fastlane/tests/androidversiontool")
   source = "./spec/fixtures"
-  destination = "/tmp/fastlane/tests/versioning"
+  destination = "/tmp/fastlane/tests/androidversiontool"
   FileUtils.copy_entry(source, destination)
 end
 
 def remove_project_files_fixture
-  FileUtils.rm_rf("/tmp/fastlane/tests/versioning")
+  FileUtils.rm_rf("/tmp/fastlane/tests/androidversiontool")
 end
