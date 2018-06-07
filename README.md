@@ -5,13 +5,13 @@
 
 ## Getting Started
 
-This project is a [_fastlane_](https://github.com/fastlane/fastlane) plugin. To get started with `fastlane-plugin-versioning_android`, add it to your project by running:
+This project is a [_fastlane_](https://github.com/fastlane/fastlane) plugin. To get started with `fastlane-plugin-android_version_tool`, add it to your project by running:
 
 ```bash
-fastlane add_plugin versioning_android
+fastlane add_plugin android_version_tool
 ```
 
-## About versioning_android
+## About android_version_tool
 
 Android Versioning Plugin for Fastlane - easily Get / Set `versionCode` and `versionName` on your Android project.
 
