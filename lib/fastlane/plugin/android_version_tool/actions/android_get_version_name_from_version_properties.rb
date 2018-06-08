@@ -16,12 +16,18 @@ module Fastlane
           UI.user_error!("Unable to find the versionName in version.properties file at #{version_properties_file_path}.")
         end
 
+        version_major = version_major[14, version_major.length]
+        version_minor = version_minor[14, version_minor.length]
+        version_path = version_path[14, version_path.length]
+        version_build = version_build[14, version_build.length]
+
         UI.success("👍  Current Android Version MAJOR is: #{version_major}")
         UI.success("👍  Current Android Version MINOR is: #{version_minor}")
         UI.success("👍  Current Android Version PATH is: #{version_path}")
         UI.success("👍  Current Android Version BUILD is: #{version_build}")
 
         version_name = "#{version_major}.#{version_minor}.#{version_path} (#{version_build})"
+        UI.success("👍  Current Android Complete Version name is: #{version_name}")
 
         # Store the Version Name in the shared hash
         Actions.lane_context[SharedValues::ANDROID_VERSION_NAME] = version_name
