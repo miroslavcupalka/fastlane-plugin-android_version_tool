@@ -1,4 +1,4 @@
-module Fastlane
+﻿module Fastlane
   module Actions
     module SharedValues
       ANDROID_VERSION_NAME = :ANDROID_VERSION_NAME
@@ -6,22 +6,14 @@ module Fastlane
 
     class AndroidGetVersionNameAction < Action
       def self.run(params)
-        version_properties_file_path = Helper::AndroidVersionToolHelper.get_version_properties_file_path(params[:version_properties_file])
-        version_major = Helper::AndroidVersionToolHelper.read_key_from_version_properties_file(version_properties_file_path, "VERSION_MAJOR")
-        version_minor = Helper::AndroidVersionToolHelper.read_key_from_version_properties_file(version_properties_file_path, "VERSION_MINOR")
-        version_path = Helper::AndroidVersionToolHelper.read_key_from_version_properties_file(version_properties_file_path, "VERSION_PATCH")
-        version_build = Helper::AndroidVersionToolHelper.read_key_from_version_properties_file(version_properties_file_path, "VERSION_BUILD")
+        gradle_file_path = Helper::VersioningAndroidHelper.get_gradle_file_path(params[:gradle_file])
+        version_name = Helper::VersioningAndroidHelper.read_key_from_gradle_file(gradle_file_path, "versionName")
 
-        if version_major == false
-          UI.user_error!("Unable to find the versionName in version.properties file at #{version_properties_file_path}.")
+        if version_name == false
+          UI.user_error!("Unable to find the versionName in build.gradle file at #{gradle_file_path}.")
         end
 
-        UI.success("👍  Current Android Version MAJOR is: #{version_major}")
-        UI.success("👍  Current Android Version MINOR is: #{version_minor}")
-        UI.success("👍  Current Android Version PATH is: #{version_path}")
-        UI.success("👍  Current Android Version BUILD is: #{version_build}")
-
-        version_name = "#{version_major}.#{version_minor}.#{version_path} (#{version_build})"
+        UI.success("👍  Current Android Version Name is: #{version_name}")
 
         # Store the Version Name in the shared hash
         Actions.lane_context[SharedValues::ANDROID_VERSION_NAME] = version_name
@@ -37,14 +29,14 @@ module Fastlane
 
       def self.available_options
         [
-          FastlaneCore::ConfigItem.new(key: :version_properties_file,
-                                  env_name: "FL_ANDROID_GET_VERSION_NAME_VERSION_PROPERTIES_FILE",
-                               description: "(optional) Specify the path to your app version.properties if it isn't in the default location",
+          FastlaneCore::ConfigItem.new(key: :gradle_file,
+                                  env_name: "FL_ANDROID_GET_VERSION_NAME_GRADLE_FILE",
+                               description: "(optional) Specify the path to your app build.gradle if it isn't in the default location",
                                   optional: true,
                                       type: String,
-                             default_value: "version.properties",
+                             default_value: "app/build.gradle",
                               verify_block: proc do |value|
-                                UI.user_error!("Could not find version.properties file") unless File.exist?(value) || Helper.test?
+                                UI.user_error!("Could not find app build.gradle file") unless File.exist?(value) || Helper.test?
                               end)
         ]
       end
@@ -60,7 +52,7 @@ module Fastlane
       end
 
       def self.authors
-        ["Miroslav Čupalka"]
+        ["Igor Lamoš"]
       end
 
       def self.is_supported?(platform)
@@ -69,8 +61,8 @@ module Fastlane
 
       def self.example_code
         [
-          'version_name = android_get_version_name # version.properties is in the default location',
-          'version_name = android_get_version_name(version_properties_file: "/path/to/version.properties")'
+          'version_name = android_get_version_name # build.gradle is in the default location',
+          'version_name = android_get_version_name(gradle_file: "/path/to/build.gradle")'
         ]
       end
     end

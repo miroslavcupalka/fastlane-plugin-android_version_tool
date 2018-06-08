@@ -33,6 +33,7 @@ module Fastlane
           major = current_version_parts[0].to_i
           minor = current_version_parts[1].to_i
           patch = current_version_parts[2].to_i
+          build = current_version_parts[3].to_i
 
           if bump_type == "major"
             new_version_name = "#{major + 1}.0.0"
@@ -40,6 +41,8 @@ module Fastlane
             new_version_name = "#{major}.#{minor + 1}.0"
           elsif bump_type == "patch"
             new_version_name = "#{major}.#{minor}.#{patch + 1}"
+          elsif bump_type == "build"
+            new_version_name = "#{major}.#{minor}.#{patch}.#{build + 1}"
           end
         end
 

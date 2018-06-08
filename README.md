@@ -22,6 +22,7 @@ Android Versioning Plugin for Fastlane - easily Get / Set `versionCode` and `ver
 - `android_get_version_name` to get the Version Name
 - `android_set_version_code` to set the new Version Code
 - `android_set_version_name` to set the new Version Name
+- `android_get_version_name_from_version_properties` to get the Version Name from version.properties
 
 ## Example
 
